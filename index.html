@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentines Cutie!!</title>
+    <link href="style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffebee;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #d32f2f;
+            font-size: 3rem;
+        }
+        img {
+            width: 200px;
+            margin: 20px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        #yes {
+            background-color: #4caf50;
+            color: white;
+        }
+        #no {
+            background-color: #f44336;
+            color: white;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #d32f2f;
+        }
+        .letter {
+            display: none;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #d32f2f;
+            border-radius: 10px;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .letter p, .note {
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Happy Valentines! 💖</h1>
+    <img src="/Cat.gif" alt="">
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+    <p id="message"></p>
+
+    <!-- Valentine Letter -->
+    <div class="letter" id="letter">
+        <h2>To My Gwyne 💌</h2>
+        <p>
+            Hey cutie! <br>
+            Just want to say that I'm so lucky to be with you. Yes that's correct!! <br><br>
+            Sometimes I'm annoying, but at least I'm kinder than you? <br><br>
+            You are the prettiest, most beautiful, gorgeous, one-of-a-kind girl I've ever met. <br><br>
+            Hirap mag English pre. Basta, ano, I love you infinitely. <br><br>
+            May our love last forever, please. <br><br> I LOVE YOU! Muapss!!
+            <br><br><br><div class="note" style="text-align: right;">Your Love of Your Life <br> - Glenniel</div>
+        </p>
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+        const message = document.getElementById('message');
+        const letter = document.getElementById('letter');
+
+        let isFixed = false; // Track if the "No" button is fixed
+
+        yesButton.addEventListener('click', () => {
+            message.textContent = "Yay! You made me the happiest! 💖";
+            // Fix the "No" button in place
+            noButton.style.position = 'static';
+            noButton.style.left = 'auto';
+            noButton.style.top = 'auto';
+            isFixed = true; // Mark the button as fixed
+            // Show the letter
+            letter.style.display = 'block';
+        });
+
+        noButton.addEventListener('mouseover', () => {
+            if (isFixed) {
+                // Teleport the "No" button to random positions
+                const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+                noButton.style.position = 'absolute';
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+            }
+        });
+
+        noButton.addEventListener('click', () => {
+            message.textContent = "Aww, don't say no! Try again! 😢";
+        });
+    </script>
+</body>
+</html>
