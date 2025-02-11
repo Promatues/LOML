@@ -20,6 +20,10 @@
             width: 200px;
             margin: 20px 0;
         }
+        .question {
+            display: none;
+            margin: 20px 0;
+        }
         .buttons {
             margin-top: 20px;
         }
@@ -30,14 +34,13 @@
             border-radius: 5px;
             cursor: pointer;
             margin: 0 10px;
+            color: white;
         }
-        #yes {
+        #yes, .yes-btn {
             background-color: #4caf50;
-            color: white;
         }
-        #no {
+        #no, .no-btn {
             background-color: #f44336;
-            color: white;
         }
         #message {
             margin-top: 20px;
@@ -58,15 +61,60 @@
             font-size: 1.2rem;
             color: #333;
         }
+        #finalQuestion {
+            font-size: 1.5rem;
+            color: #d32f2f;
+            display: none;
+        }
+        #continueBtn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #d32f2f;
+            color: white;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Happy Valentines! 💖</h1>
     <img src="/Cat.gif" alt="">
-    <div class="buttons">
-        <button id="yes">Yes</button>
-        <button id="no">No</button>
+    
+    <div class="survey">
+        <div class="question" id="q1">
+            <p>Do you like Glenniel?</p>
+            <div class="buttons">
+                <button class="yes-btn" onclick="nextQuestion('q2')">Yes</button>
+                <button class="no-btn" onclick="dodgeButton(this)">No</button>
+            </div>
+        </div>
+        <div class="question" id="q2">
+            <p>Is Glenniel pogi?</p>
+            <div class="buttons">
+                <button class="yes-btn" onclick="nextQuestion('q3')">Yes</button>
+                <button class="no-btn" onclick="dodgeButton(this)">No</button>
+            </div>
+        </div>
+        <div class="question" id="q3">
+            <p>Do you enjoy being with Glenniel?</p>
+            <div class="buttons">
+                <button class="yes-btn" onclick="showFinalQuestion()">Yes</button>
+                <button class="no-btn" onclick="dodgeButton(this)">No</button>
+            </div>
+        </div>
+        <div class="question" id="finalQuestion">FINAL QUESTION <br><button id="continueBtn" onclick="nextQuestion('q4')">...</button></div>
+        <div class="question" id="q4">
+            <p>Do you love me? 😊</p>
+            <div class="buttons">
+                <button id="yes">Yes</button>
+                <button id="no" onclick="dodgeButton(this)">No</button>
+            </div>
+        </div>
     </div>
+    
     <p id="message"></p>
 
     <!-- Valentine Letter -->
@@ -74,47 +122,68 @@
         <h2>To My Gwyne 💌</h2>
         <p>
             Hey cutie! <br>
-            Just want to say that I'm so lucky to be with you. Yes that's correct!! <br><br>
+            Just want to say that I'm so lucky to be with you. Yes, that's correct!! <br><br>
             Sometimes I'm annoying, but at least I'm kinder than you? <br><br>
             You are the prettiest, most beautiful, gorgeous, one-of-a-kind girl I've ever met. <br><br>
-            Hirap mag English pre. Basta, ano, I love you infinitely. <br><br>
+            Hirap mag-English pre. Basta, ano, I love you infinitely. <br><br>
             May our love last forever, please. <br><br> I LOVE YOU! Muapss!!
             <br><br><br><div class="note" style="text-align: right;">Your Love of Your Life <br> - Glenniel</div>
         </p>
     </div>
 
     <script>
+        function nextQuestion(nextId) {
+            const current = document.querySelector('.question:not([style*="display: none"])');
+            current.style.display = 'none';
+            const next = document.getElementById(nextId);
+            next.style.display = 'block';
+        }
+
+        function showFinalQuestion() {
+            const current = document.querySelector('.question:not([style*="display: none"])');
+            current.style.display = 'none';
+            const final = document.getElementById('finalQuestion');
+            final.style.display = 'block';
+        }
+
+        document.getElementById('q1').style.display = 'block';
+
         const yesButton = document.getElementById('yes');
-        const noButton = document.getElementById('no');
+        const noButtons = document.querySelectorAll('.no-btn');
         const message = document.getElementById('message');
         const letter = document.getElementById('letter');
 
         let isFixed = false; // Track if the "No" button is fixed
 
+        function dodgeButton(button) {
+            if (!isFixed) {
+                // Teleport the "No" button to random positions
+                const x = Math.random() * (window.innerWidth - button.offsetWidth);
+                const y = Math.random() * (window.innerHeight - button.offsetHeight);
+                button.style.position = 'absolute';
+                button.style.left = `${x}px`;
+                button.style.top = `${y}px`;
+            }
+        }
+
         yesButton.addEventListener('click', () => {
             message.textContent = "Yay! You made me the happiest! 💖";
             // Fix the "No" button in place
-            noButton.style.position = 'static';
-            noButton.style.left = 'auto';
-            noButton.style.top = 'auto';
-            isFixed = true; // Mark the button as fixed
+            noButtons.forEach(noButton => {
+                noButton.style.position = 'static';
+                noButton.style.left = 'auto';
+                noButton.style.top = 'auto';
+                noButton.classList.remove('no-dodge');
+            });
+            isFixed = true; // Mark the buttons as fixed
             // Show the letter
             letter.style.display = 'block';
         });
 
-        noButton.addEventListener('mouseover', () => {
-            if (isFixed) {
-                // Teleport the "No" button to random positions
-                const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
-                const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
-                noButton.style.position = 'absolute';
-                noButton.style.left = `${x}px`;
-                noButton.style.top = `${y}px`;
-            }
-        });
-
-        noButton.addEventListener('click', () => {
-            message.textContent = "Aww, don't say no! Try again! 😢";
+        noButtons.forEach(noButton => {
+            noButton.addEventListener('click', () => {
+                dodgeButton(noButton);
+            });
         });
     </script>
 </body>
