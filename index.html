@@ -1,190 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentines Cutie!!</title>
-    <link href="style.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ffebee;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            color: #d32f2f;
-            font-size: 3rem;
-        }
-        img {
-            width: 200px;
-            margin: 20px 0;
-        }
-        .question {
-            display: none;
-            margin: 20px 0;
-        }
-        .buttons {
-            margin-top: 20px;
-        }
-        .buttons button {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 10px;
-            color: white;
-        }
-        #yes, .yes-btn {
-            background-color: #4caf50;
-        }
-        #no, .no-btn {
-            background-color: #f44336;
-        }
-        #message {
-            margin-top: 20px;
-            font-size: 1.5rem;
-            color: #d32f2f;
-        }
-        .letter {
-            display: none;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border: 2px solid #d32f2f;
-            border-radius: 10px;
-            max-width: 600px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .letter p, .note {
-            font-size: 1.2rem;
-            color: #333;
-        }
-        #finalQuestion {
-            font-size: 1.5rem;
-            color: #d32f2f;
-            display: none;
-        }
-        #continueBtn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #d32f2f;
-            color: white;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Valentines Cutie Gwyne!!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffebee;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #d32f2f;
+      font-size: 3rem;
+    }
+    img {
+      width: 200px;
+      margin: 20px 0;
+    }
+    .question {
+      display: none;
+      margin: 20px 0;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    /* Fade-out effect for the current question */
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOut 0.3s ease-out forwards;
+    }
+    /* Pop-up (bounce) effect */
+    @keyframes popUpAfter {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    .pop-up-after {
+      animation: popUpAfter 0.5s ease-out;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 0 10px;
+      color: white;
+    }
+    #yes, .yes-btn {
+      background-color: #4caf50;
+    }
+    #no, .no-btn {
+      background-color: #f44336;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: #d32f2f;
+    }
+    .letter {
+      display: none;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border: 2px solid #d32f2f;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative; /* Added for confetti positioning */
+      overflow: hidden;   /* Hide any overflowing confetti */
+    }
+    .letter p,
+    .note {
+      font-size: 1.2rem;
+      color: #333;
+    }
+    #finalQuestion {
+      font-size: 1.5rem;
+      color: #d32f2f;
+      display: none;
+    }
+    #continueBtn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #d32f2f;
+      color: white;
+      margin-top: 10px;
+    }
+    /* Confetti styles */
+    .confetti-piece {
+      position: absolute;
+      top: 0;
+      opacity: 0;
+      animation: confetti-fall 2s ease-out forwards;
+    }
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(150px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Happy Valentines! 💖</h1>
-    <img src="Cat.gif" alt="">
-    
-    <div class="survey">
-        <div class="question" id="q1">
-            <p>Do you like Glenniel?(⌐■_■)</p>
-            <div class="buttons">
-                <button class="yes-btn" onclick="nextQuestion('q2')">Yes</button>
-                <button class="no-btn" onclick="dodgeButton(this)">No</button>
-            </div>
-        </div>
-        <div class="question" id="q2">
-            <p>Is Glenniel pogi?( ͡° ͜ʖ ͡° )</p>
-            <div class="buttons">
-                <button class="yes-btn" onclick="nextQuestion('q3')">Yes</button>
-                <button class="no-btn" onclick="dodgeButton(this)">No</button>
-            </div>
-        </div>
-        <div class="question" id="q3">
-            <p>Do you enjoy being with Glenniel?(ɔˆ ³(ˆ⌣ˆc)</p>
-            <div class="buttons">
-                <button class="yes-btn" onclick="showFinalQuestion()">Yes</button>
-                <button class="no-btn" onclick="dodgeButton(this)">No</button>
-            </div>
-        </div>
-        <div class="question" id="finalQuestion">FINAL QUESTION(⌐▀͡ ̯ʖ▀) <br><button id="continueBtn" onclick="nextQuestion('q4')">...</button></div>
-        <div class="question" id="q4">
-            <p>Do you love me?(Glenniel) ♡〜٩( ╹▿╹ )۶〜♡</p>
-            <div class="buttons">
-                <button id="yes">Yes</button>
-                <button id="no" onclick="dodgeButton(this)">No</button>
-            </div>
-        </div>
+  <h1>Happy Valentines! 💖</h1>
+  <img src="/cat.gif" alt="" />
+
+  <div class="survey">
+    <div class="question" id="q1">
+      <p>Do you like Glenniel?</p>
+      <div class="buttons">
+        <button class="yes-btn" onclick="nextQuestion('q2')">Yes</button>
+        <button class="no-btn" onclick="dodgeButton(this)">No</button>
+      </div>
     </div>
-    
-    <p id="message"></p>
-
-    <!-- Valentine Letter -->
-    <div class="letter" id="letter">
-        <h2>To My Gwyne 💌</h2>
-        <p>
-            Hey cutie! <br>
-            Just want to say that I'm so lucky to be with you. Yes, that's correct!! <br><br>
-            Sometimes I'm annoying, but at least I'm kinder than you? <br><br>
-            You are the prettiest, most beautiful, gorgeous, one-of-a-kind girl I've ever met. <br><br>
-            Hirap mag-English pre. Basta, ano, I love you infinitely. <br><br>
-            May our love last forever, please. <br><br> I LOVE YOU! Muapss!!
-            <br><br><br><div class="note" style="text-align: right;">Your Love of Your Life <br> - Glenniel</div>
-        </p>
+    <div class="question" id="q2">
+      <p>Is Glenniel pogi?</p>
+      <div class="buttons">
+        <button class="yes-btn" onclick="nextQuestion('q3')">Yes</button>
+        <button class="no-btn" onclick="dodgeButton(this)">No</button>
+      </div>
     </div>
+    <div class="question" id="q3">
+      <p>Do you enjoy being with Glenniel?</p>
+      <div class="buttons">
+        <button class="yes-btn" onclick="showFinalQuestion()">Yes</button>
+        <button class="no-btn" onclick="dodgeButton(this)">No</button>
+      </div>
+    </div>
+    <div class="question" id="finalQuestion">
+      FINAL QUESTION <br />
+      <button id="continueBtn" onclick="nextQuestion('q4')">...</button>
+    </div>
+    <div class="question" id="q4">
+      <p>Do you love me? 😊</p>
+      <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no" onclick="dodgeButton(this)">No</button>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        function nextQuestion(nextId) {
-            const current = document.querySelector('.question:not([style*="display: none"])');
-            current.style.display = 'none';
-            const next = document.getElementById(nextId);
-            next.style.display = 'block';
-        }
+  <p id="message"></p>
 
-        function showFinalQuestion() {
-            const current = document.querySelector('.question:not([style*="display: none"])');
-            current.style.display = 'none';
-            const final = document.getElementById('finalQuestion');
-            final.style.display = 'block';
-        }
+  <!-- Valentine Letter -->
+  <div class="letter" id="letter">
+    <h2>To My Gwyne 💌</h2>
+    <p>
+      Hi Gwyne!! <br /><br />
+      Just want to say that I'm so lucky to be with you. <br /><br />
+      I'm really glad you came into my life. For over 4 years that we've been together, I'm so
+      grateful that I met you. <br /><br />
+      Dati, ang bait-bait pa natin sa isa't isa—like tipong nagkakahiyaan, masipag mag-reply sa
+      isa't isa, at lagi tayong nag-a-update ng mga ginagawa natin. <br /><br />
+      Kahit busy tayo ngayon, hindi pa rin natin nalilimutan mag-chat sa isa't isa. Kamusta ka
+      na? Kumain ka na ba? Nagawa mo na ba ang assignments mo? HAHAHA <br /><br />
+      Marahil nagtataka ka kung bakit ngayon lang ako nakapagbigay ng ganitong letter sa'yo. To be
+      honest, I don't really know. Siguro dahil malimit na lang yung pag-uusap natin, and most of
+      the time, wala na tayong update sa isa't isa. I understand our situation kahit ganon pa man. <br /><br />
+      I know that we're doing this for our own good. Pero sometimes, kapag malimit na lang tayo
+      nakakapag-usap, parang ayoko na lang mag-usap tayo. Seryoso, hindi ko alam kung bakit ganon
+      yung naiisip ko, pero kapag nangyayari naman 'yon, I always chat something random. IDK,
+      minsan nakakatulong yung ganon. HAHAHAHA <br /><br />
+      Anyway, I really appreciate you doing simple things for me—especially noong mga high school
+      days ko, na bobo ako sa essays and cheering me up. I'm so very thankful na nandoon ka at
+      tinutulungan mo ako. Basta tandaan mo lagi na I love you so so much, whatever happens. Parang
+      suicide letter to HAHAHAHA 😆 <br /><br />
+      Ang cringe ko gumawa ng letter, kaya siguro hindi ko gusto gumawa ng ganyan lagi. HAHAHAHA.
+      Pag-type pa lang nito, nakiki-cringe na ako eh, pero galing sa puso ko 'to. <br /><br />
+      <b>I LOVE YOU!! <br /> MUAPSS!!</b> <br /><br />
+      PS. Seryoso ako sa part na pananagutan kita, and sorry na nakakalito ang flow ng letter ko.
+      HAHAHAHA 🤗
+      <br /><br /><br />
+      <div class="note" style="text-align: right;">
+        Your Love of Your Life <br /> - Glenniel
+      </div>
+    </p>
+  </div>
 
-        document.getElementById('q1').style.display = 'block';
+  <script>
+    // Track the currently visible question
+    let currentQuestion = document.getElementById('q1');
+    currentQuestion.style.display = 'block';
 
-        const yesButton = document.getElementById('yes');
-        const noButtons = document.querySelectorAll('.no-btn');
-        const message = document.getElementById('message');
-        const letter = document.getElementById('letter');
+    // This function shows the next question immediately, then applies the pop-up effect.
+    function showNextQuestion(nextId) {
+      const next = document.getElementById(nextId);
+      next.style.display = 'block';
+      currentQuestion = next; // update tracker
+      setTimeout(() => {
+        next.classList.add('pop-up-after');
+        next.addEventListener('animationend', () => {
+          next.classList.remove('pop-up-after');
+        }, { once: true });
+      }, 100);
+    }
 
-        let isFixed = false; // Track if the "No" button is fixed
+    // Transition: fade out the current question, then show the next with a pop-up.
+    function nextQuestion(nextId) {
+      if (currentQuestion) {
+        currentQuestion.classList.add('fade-out');
+        currentQuestion.addEventListener('animationend', () => {
+          currentQuestion.style.display = 'none';
+          currentQuestion.classList.remove('fade-out');
+          showNextQuestion(nextId);
+        }, { once: true });
+      } else {
+        showNextQuestion(nextId);
+      }
+    }
 
-        function dodgeButton(button) {
-            if (!isFixed) {
-                // Teleport the "No" button to random positions
-                const x = Math.random() * (window.innerWidth - button.offsetWidth);
-                const y = Math.random() * (window.innerHeight - button.offsetHeight);
-                button.style.position = 'absolute';
-                button.style.left = `${x}px`;
-                button.style.top = `${y}px`;
-            }
-        }
+    // Transition to the final question.
+    function showFinalQuestion() {
+      if (currentQuestion) {
+        currentQuestion.classList.add('fade-out');
+        currentQuestion.addEventListener('animationend', () => {
+          currentQuestion.style.display = 'none';
+          currentQuestion.classList.remove('fade-out');
+          showNextQuestion('finalQuestion');
+        }, { once: true });
+      } else {
+        showNextQuestion('finalQuestion');
+      }
+    }
 
-        yesButton.addEventListener('click', () => {
-            message.textContent = "Yay! You made me the happiest! 💖";
-            // Fix the "No" button in place
-            noButtons.forEach(noButton => {
-                noButton.style.position = 'static';
-                noButton.style.left = 'auto';
-                noButton.style.top = 'auto';
-                noButton.classList.remove('no-dodge');
-            });
-            isFixed = true; // Mark the buttons as fixed
-            // Show the letter
-            letter.style.display = 'block';
+    // "Yes" and "No" button functionalities
+    const yesButton = document.getElementById('yes');
+    const noButtons = document.querySelectorAll('.no-btn');
+    const message = document.getElementById('message');
+    const letter = document.getElementById('letter');
+
+    let isFixed = false; // Track if the "No" button is fixed
+
+    function dodgeButton(button) {
+      if (!isFixed) {
+        // Get the viewport dimensions
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = document.documentElement.clientHeight;
+
+        // Get the button's dimensions
+        const buttonWidth = button.offsetWidth;
+        const buttonHeight = button.offsetHeight;
+
+        // Calculate the maximum possible X and Y values
+        const maxX = viewportWidth - buttonWidth;
+        const maxY = viewportHeight - buttonHeight;
+
+        // Generate random positions within the viewport boundaries
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        // Set the button's position
+        button.style.position = 'absolute';
+        button.style.left = `${x}px`;
+        button.style.top = `${y}px`;
+      }
+    }
+
+    yesButton.addEventListener('click', () => {
+      message.textContent = "Yay! You made me the happiest! 💖";
+      // Fix the "No" buttons in place
+      noButtons.forEach(noButton => {
+        noButton.style.position = 'static';
+        noButton.style.left = 'auto';
+        noButton.style.top = 'auto';
+      });
+      isFixed = true;
+      // Show the Valentine letter with a pop-up effect
+      letter.style.display = 'block';
+      setTimeout(() => {
+        letter.classList.add('pop-up-after');
+        letter.addEventListener('animationend', () => {
+          letter.classList.remove('pop-up-after');
+        }, { once: true });
+        launchConfetti(); // Launch confetti when the letter appears!
+      }, 100);
+    });
+
+    noButtons.forEach(noButton => {
+      noButton.addEventListener('click', () => {
+        dodgeButton(noButton);
+      });
+    });
+
+    // Function to launch confetti on the letter
+    function launchConfetti() {
+      const confettiCount = 30;
+      const colors = [
+        '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
+        '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50',
+        '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'
+      ];
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti-piece');
+        // Set a random left position relative to the letter container
+        confetti.style.left = Math.random() * 100 + '%';
+        // Random animation delay for a staggered effect
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        // Random color from the list
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        // Random size for each piece
+        const size = Math.random() * 6 + 4; // between 4px and 10px
+        confetti.style.width = size + 'px';
+        confetti.style.height = size + 'px';
+        // Apply an initial random rotation
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        letter.appendChild(confetti);
+        
+        // Remove the confetti piece after its animation ends
+        confetti.addEventListener('animationend', () => {
+          confetti.remove();
         });
-
-        noButtons.forEach(noButton => {
-            noButton.addEventListener('click', () => {
-                dodgeButton(noButton);
-            });
-        });
-    </script>
+      }
+    }
+  </script>
 </body>
 </html>
